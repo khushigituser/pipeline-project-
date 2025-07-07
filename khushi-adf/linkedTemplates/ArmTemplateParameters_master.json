@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "khushi-adf"
+		},
+		"AzureBlobStorageLS_connectionString": {
+			"value": ""
+		},
+		"LS_SQL_CustomerDB1_password": {
+			"value": ""
+		},
+		"LS_SQL_CustomerDB1_properties_typeProperties_server": {
+			"value": "khushi-sql-server.database.windows.net"
+		},
+		"LS_SQL_CustomerDB1_properties_typeProperties_database": {
+			"value": "ProductDB"
+		},
+		"LS_SQL_CustomerDB1_properties_typeProperties_userName": {
+			"value": "khushi_admin"
+		},
+		"RestCountriesAPI_properties_typeProperties_url": {
+			"value": "https://restcountries.com/"
+		},
+		"trigger1_properties_CopyCustomerPipeline_parameters_customerCount": {
+			"value": 508
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
