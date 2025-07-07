@@ -1,0 +1,22 @@
+{
+	"name": "CountrySourceData",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RestCountriesAPI",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": {
+					"value": "v3.1/name/@{item()}",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

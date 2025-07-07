@@ -1,0 +1,9 @@
+{
+	"name": "khushi-adf",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "adb9cfe8-9916-458f-9331-1a574add9817",
+		"tenantId": "62c20ae3-f069-43c1-a7a8-f9b33f4ade30"
+	}
+}

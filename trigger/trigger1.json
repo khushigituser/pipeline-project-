@@ -1,0 +1,27 @@
+{
+	"name": "trigger1",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "CopyCustomerPipeline",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"customerCount": 508
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Hour",
+				"interval": 9,
+				"startTime": "2025-07-01T18:57:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}

@@ -1,0 +1,159 @@
+{
+	"name": "CopyCustomerPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "GetProductCount",
+				"description": "This pipeline checks customer count and conditionally runs product copy",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT COUNT(*) AS total FROM Products;\n\n",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_SQL_CustomerCount",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "RunProductPipeline",
+				"description": "This pipeline checks customer count and conditionally runs product copy",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "SetCustomerCount",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greater(int(activity('GetProductCount').output.firstRow.total), 500)\n",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "CopyCustomerData",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "SELECT * FROM Customer\n",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "JsonWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_SQL_Customer",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_Blob_CustomerOutput",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "Execute Pipeline1",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "CopyCustomerData",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "CopyProductPipeline",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "SetCustomerCount",
+				"description": "This pipeline checks customer count and conditionally runs product copy",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetProductCount",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "customerCount",
+					"value": {
+						"value": "@int(activity('GetProductCount').output.firstRow.total)\n",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"customerCount": {
+				"type": "int"
+			}
+		},
+		"variables": {
+			"customerCount": {
+				"type": "Integer"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-07-01T19:01:16Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

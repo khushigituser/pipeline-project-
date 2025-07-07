@@ -1,0 +1,13 @@
+{
+	"name": "DS_SQL_CustomerCount",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SQL_CustomerDB1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
