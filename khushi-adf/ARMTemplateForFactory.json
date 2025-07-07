@@ -661,10 +661,19 @@
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
-						"frequency": "Hour",
-						"interval": 9,
+						"frequency": "Day",
+						"interval": 1,
 						"startTime": "2025-07-01T18:57:00",
-						"timeZone": "India Standard Time"
+						"timeZone": "India Standard Time",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								0,
+								12
+							]
+						}
 					}
 				}
 			},
